@@ -1,12 +1,14 @@
-from typing_extensions import Self
+import os
 import ffmpeg
 import glob
+
 
 class mp4_mp3():
 
     def all(self, path = ''):
         self.search_mp4()
         self.change_mp4(path)
+        self.remove()
 
 
     def search_mp4(self):
@@ -27,3 +29,7 @@ class mp4_mp3():
         
         # 実行 
         ffmpeg.run(stream)
+
+
+    def remove(self):
+        os.remove(self.name +".mp4")
