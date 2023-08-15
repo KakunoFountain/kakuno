@@ -1,10 +1,12 @@
 from time import sleep
 # import requests
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import chromedriver_binary
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 # from __future__ import unicode_literals
-from yt_dlp import YoutubeDL
+from yt_dlp import YoutubeDL, DownloadError
 
 class Web():
 
@@ -18,32 +20,31 @@ class Web():
 
 
     def start(self, url=None, disp = False):
-        chrome_path = "C:\Path\Chrome\chromedriver.exe"
 
-        options = Options()
-        if disp:
-            options.add_argument('--headless')
-
-        self.browser = webdriver.Chrome(chrome_path, options = options)
+        self.browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         
         #待機時間
-        sleep(2)
+        # sleep(1)
         if url != None:
             self.browser.get(url)
 
 
     def quit(self):
-
         self.cur_url = self.browser.current_url
         self.browser.quit()
 
-
     def download(self):
-
+        
         ydl_opts = {'format': 'best'}
+
         with YoutubeDL(ydl_opts) as ydl:
-            result = ydl.download([self.cur_url])
-            print(result)
+            
+            try:
+                ydl.cache.remove()
+                result = ydl.download([self.cur_url])
+                print("resullllt::", result)
+            except DownloadError as error:
+                pass
 
     def test_url(self):
         self.cur_url = "https://www.youtube.com/watch?v=cm-l2h6GB8Q"

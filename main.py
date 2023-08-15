@@ -1,7 +1,7 @@
-from webcommand import Web
-from mp4_mp3 import mp4_mp3
+from .webcommand import Web
+from .mp4_mp3 import mp4_mp3
 
-test = True
+test = False
 
 def main():
 
@@ -21,7 +21,9 @@ def main():
 
     web.download()
 
-    mp4_mp3().all()
+    mp3 = mp4_mp3()
+    mp3.all('../../dataU')
+
 
     
 
